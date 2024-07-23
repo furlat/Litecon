@@ -35,3 +35,103 @@ Double auctions are a specific type of microeconomic system commonly used in exp
 
 
 ## Design and Implementation
+
+```mermaid
+classDiagram
+    class Environment {
+        +agents: List[Agent]
+        +commodities: List[Commodity]
+    }
+    class Institution {
+        +language: Language
+        +allocation_rules: AllocationRules
+        +cost_imputation_rules: CostImputationRules
+        +adjustment_process_rules: AdjustmentProcessRules
+    }
+    class MicroeconomicSystem {
+        +environment: Environment
+        +institution: Institution
+    }
+    class Agent {
+        +id: int
+        +utility_function: Function
+        +endowment: Dict[Commodity, float]
+        +send_message(message: Message)
+        +receive_message(message: Message)
+    }
+    class Buyer {
+        +induced_value: float
+    }
+    class Seller {
+        +induced_cost: float
+    }
+    class Commodity {
+        +id: int
+        +name: str
+    }
+    class Message {
+        +sender: Agent
+        +content: str
+        +timestamp: datetime
+    }
+    class Bid {
+        +price: float
+        +quantity: int
+    }
+    class Ask {
+        +price: float
+        +quantity: int
+    }
+    class Language {
+        +valid_messages: List[str]
+    }
+    class AllocationRules {
+        +determine_allocation(bids: List[Bid], asks: List[Ask])
+    }
+    class CostImputationRules {
+        +calculate_costs(trades: List[Trade])
+    }
+    class AdjustmentProcessRules {
+        +start_rule()
+        +transition_rule()
+        +stopping_rule()
+    }
+    class DoubleAuction {
+        +buyers: List[Buyer]
+        +sellers: List[Seller]
+        +bids: List[Bid]
+        +asks: List[Ask]
+        +trades: List[Trade]
+        +current_price: float
+        +submit_bid(bid: Bid)
+        +submit_ask(ask: Ask)
+        +execute_trades()
+        +clear_market()
+    }
+    class Trade {
+        +buyer: Buyer
+        +seller: Seller
+        +price: float
+        +quantity: int
+        +timestamp: datetime
+    }
+
+    MicroeconomicSystem *-- Environment
+    MicroeconomicSystem *-- Institution
+    Environment *-- Agent
+    Environment *-- Commodity
+    Agent <|-- Buyer
+    Agent <|-- Seller
+    Agent -- Message
+    Message <|-- Bid
+    Message <|-- Ask
+    Institution *-- Language
+    Institution *-- AllocationRules
+    Institution *-- CostImputationRules
+    Institution *-- AdjustmentProcessRules
+    DoubleAuction *-- Buyer
+    DoubleAuction *-- Seller
+    DoubleAuction *-- Bid
+    DoubleAuction *-- Ask
+    DoubleAuction *-- Trade
+```
